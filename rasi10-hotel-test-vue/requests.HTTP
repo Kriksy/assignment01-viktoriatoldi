@@ -1,0 +1,16 @@
+### POST REQUEST TO GET AN ACCESS TOKEN
+POST http://localhost:3000/api/login
+content-type: application/json
+
+{
+    "username": "tester01",
+	"password": "GteteqbQQgSr88SwNExUQv2ydb7xuf8c"
+    
+}
+
+### GET REQUEST TO RETRIEVE ALL CLIENTS
+GET http://localhost:3000/api/clients 
+content-type: application/json
+accept: application/json
+body: null
+x-user-auth:{ "username": "tester01", "token": "cd8087a03b15d27cbb6c6c38f003be40"}
