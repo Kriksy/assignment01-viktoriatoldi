@@ -1,6 +1,8 @@
 
-@port=3000
+@port={{$dotenv PORT}}
 @server=http://localhost:{{port}}
+@tester_username={{$dotenv TEST_USERNAME}}
+@tester_password={{$dotenv TEST_PASSWORD}}
 
 #
 
@@ -10,29 +12,50 @@ POST {{server}}/api/login
 content-type: application/json
 
 {
-    "username": "tester01",
-    "password": "GteteqbQQgSr88SwNExUQv2ydb7xuf8c"
+    "username": "{{tester_username}}",
+    "password": "{{tester_password}}"
 }
 
 ### GET REQUEST TO RETRIEVE ALL CLIENTS
+# @prompt token Tester Token
 GET {{server}}/api/clients 
 content-type: application/json
 accept: application/json
 body: null
-x-user-auth:{ "username": "tester01", "token": "7836b910c4900d36be427a5627882f7b"}
-
+x-user-auth:{ "username": "{{tester_username}}", "token": "{{token}}"}
 
 ### CREATE A NEW CLIENT
+# @prompt token Tester Token
 # @prompt username Username
 # @prompt email Email
 # @prompt telephone Telephone
 POST {{server}}/api/client/new
 content-type: application/json
-x-user-auth: {"username":"tester01","token":"7836b910c4900d36be427a5627882f7b"}
+x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
 
 {
+    "id":"",
     "name": "{{username}}",
     "email": "{{email}}",
     "telephone": "{{telephone}}"
 }
 
+### UPDATE A CLIENT
+# @prompt token Tester Token
+# @prompt username Username to update
+# @prompt client_id Client ID
+
+# @prompt updated_name Client Updated Name
+# @prompt updated_email Client Updated Email
+# @prompt updated_telephone Client Updated Telephone
+
+PUT {{server}}/api/client/{{client_id}}
+content-type: application/json
+x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
+
+{
+    "id": "",
+    "name": "{{updated_name}}",
+    "email": "{{updated_email}}",
+    "telephone": "{{updated_telephone}}"
+}
