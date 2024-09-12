@@ -1,16 +1,38 @@
+
+@port=3000
+@server=http://localhost:{{port}}
+
+#
+
 ### POST REQUEST TO GET AN ACCESS TOKEN
-POST http://localhost:3000/api/login
+
+POST {{server}}/api/login
 content-type: application/json
 
 {
     "username": "tester01",
-	"password": "GteteqbQQgSr88SwNExUQv2ydb7xuf8c"
-    
+    "password": "GteteqbQQgSr88SwNExUQv2ydb7xuf8c"
 }
 
 ### GET REQUEST TO RETRIEVE ALL CLIENTS
-GET http://localhost:3000/api/clients 
+GET {{server}}/api/clients 
 content-type: application/json
 accept: application/json
 body: null
-x-user-auth:{ "username": "tester01", "token": "cd8087a03b15d27cbb6c6c38f003be40"}
+x-user-auth:{ "username": "tester01", "token": "7836b910c4900d36be427a5627882f7b"}
+
+
+### CREATE A NEW CLIENT
+# @prompt username Username
+# @prompt email Email
+# @prompt telephone Telephone
+POST {{server}}/api/client/new
+content-type: application/json
+x-user-auth: {"username":"tester01","token":"7836b910c4900d36be427a5627882f7b"}
+
+{
+    "name": "{{username}}",
+    "email": "{{email}}",
+    "telephone": "{{telephone}}"
+}
+
