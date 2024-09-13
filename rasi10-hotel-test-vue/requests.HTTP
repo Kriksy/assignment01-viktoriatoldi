@@ -161,3 +161,20 @@ x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
     "paid": false
 }
 
+### UPDATE A BILL
+# @prompt token Tester Token
+
+# @prompt bill_id Bill ID
+# @prompt value Bills Value
+# @prompt bill_id Bill ID
+PUT {{server}}/api/bill/{{bill_id}}
+content-type: application/json
+x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
+
+{
+    "id": "{{bill_id}}",
+    "created": "",
+    "value": "{{value}}",
+    "paid": false
+}
+
