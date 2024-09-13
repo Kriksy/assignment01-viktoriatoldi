@@ -81,10 +81,36 @@ x-user-auth: { "username":"{{tester_username}}","token":"{{token}}"}
 # @prompt token Tester Token
 
 # @prompt floor Floor
-# @prompt room_number Rooms number
-# @prompt price Price
+# @prompt room_number Room Number
+# @prompt price Room Price
 
 POST {{server}}/api/room/new
+content-type: application/json
+x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
+
+{
+    "id": "",
+    "created": "",
+    "category": "double",
+    "floor": "{{floor}}",
+    "number": "{{room_number}}",
+    "available": true,
+    "price": "{{price}}",
+    "features": [
+      "balcony",
+      "sea_view",
+      "ensuite"
+    ]
+}
+
+### UPDATE A ROOM
+# @prompt token Tester Token
+# @prompt room_id Room ID
+
+# @prompt floor Floor
+# @prompt room_number Room Number
+# @prompt price Room Price
+PUT {{server}}/api/room/{{room_id}}
 content-type: application/json
 x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
 
