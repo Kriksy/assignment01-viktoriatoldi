@@ -135,3 +135,13 @@ x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
 # @prompt room_id Room ID
 DELETE {{server}}/api/room/{{room_id}}
 x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
+
+#####
+
+### GET REQUEST TO RETRIEVE ALL BILLS
+# @prompt token Tester Token
+GET {{server}}/api/bills 
+content-type: application/json
+accept: application/json
+body: null
+x-user-auth: {"username":"{{tester_username}}","token":"{{token}}"}
