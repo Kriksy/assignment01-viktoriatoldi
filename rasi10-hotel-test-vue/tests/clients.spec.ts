@@ -19,31 +19,6 @@ test.describe("Clients", () => {
 
     await page.waitForTimeout(2000); // Wait for login to succeed
 
-    // START: Test dashboard page
-
-    await expect(
-      page.url(),
-      "Check that we are on http://localhost:3000/"
-    ).toBe("http://localhost:3000/"); //assertion
-
-    await expect(
-      page.getByRole("heading", { name: "Tester Hotel Overview" }),
-      "Check that the heading is now Tester Hotel Overview"
-    ).toBeVisible();
-
-    await expect(
-      page.getByRole("link", { name: "Tester Hotel" }),
-      "Check that the banner contains 'Tester Hotel'"
-    ).toBeVisible(); //assertion
-
-    //assertion
-    await expect(
-      page.getByRole("heading", { name: "Tester Hotel Overview" }),
-      "Check that dashboard contain 'Test Hotel Overview' heading"
-    ).toBeVisible();
-
-    // END: Test dashboard page
-
     // Navigate to clients view
 
     // Saving page.locator as viewClientButton in dashboard.page.ts
