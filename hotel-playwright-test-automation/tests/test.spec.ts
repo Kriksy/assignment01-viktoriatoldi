@@ -11,6 +11,7 @@ test.describe("Clients", () => {
     const loginPage = new LoginPage(page);
     const createClientsPage = new CreateClientsPage(page);
 
+    // Perform Login
     await loginPage.goto();
     await loginPage.performLogin(
       `${process.env.TEST_USERNAME}`,
@@ -22,6 +23,7 @@ test.describe("Clients", () => {
       "Check that the heading is now Tester Hotel Overview"
     ).toBeVisible();
 
+    // Browse to Clients
     await page.locator("#app > div > div > div:nth-child(2) > a").click();
 
     await expect(
@@ -29,6 +31,7 @@ test.describe("Clients", () => {
       "Check that the heading is now 'Clients'"
     ).toBeVisible();
 
+    // Browse to Clients / Create Client
     await page.getByRole("link", { name: "Create Client" }).click();
 
     await expect(
@@ -36,7 +39,7 @@ test.describe("Clients", () => {
       "Check current page title to be New Client"
     ).toBeVisible();
 
-    // Create new fake client data
+    // Create fake client data
     const fullName = faker.person.fullName();
     const userEmail = faker.internet.email();
     const userPhoneNo = faker.phone.number();
@@ -60,5 +63,14 @@ test.describe("Clients", () => {
     await expect(element).toContainText(fullName);
     await expect(element).toContainText(userEmail);
     await expect(element).toContainText(userPhoneNo);
+
+    // Perform Logout
+    await page.goto(`${process.env.BASE_URL}/`);
+    await page.getByRole("button", { name: "Logout" }).click();
+
+    await expect(
+      page,
+      "Check that the url is /login after clicking logout"
+    ).toHaveURL(/.*\/login/);
   });
 });
