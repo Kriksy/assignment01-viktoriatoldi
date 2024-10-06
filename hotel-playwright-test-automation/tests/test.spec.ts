@@ -7,21 +7,11 @@ import { LoginPage } from "../pages/login.page";
 require("dotenv").config();
 
 test.describe("Clients", () => {
-  test("Test case: Create New Client", async ({ page }) => {
-    const loginPage = new LoginPage(page);
+  test("Create Client", async ({ page }) => {
     const createClientsPage = new CreateClientsPage(page);
 
-    // Perform Login
-    await loginPage.goto();
-    await loginPage.performLogin(
-      `${process.env.TEST_USERNAME}`,
-      `${process.env.TEST_PASSWORD}`
-    );
-
-    await expect(
-      page.getByRole("heading", { name: "Tester Hotel Overview" }),
-      "Check that the heading is now Tester Hotel Overview"
-    ).toBeVisible();
+    await page.goto("/");
+    await page.waitForURL(`/`);
 
     // Browse to Clients
     await page.locator("#app > div > div > div:nth-child(2) > a").click();
