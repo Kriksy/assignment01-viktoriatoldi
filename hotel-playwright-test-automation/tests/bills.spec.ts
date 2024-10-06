@@ -69,4 +69,50 @@ test.describe("Bills", () => {
       "Check that the url is /login after clicking logout"
     ).toHaveURL(/.*\/login/);
   });
+
+  test("Create Bill Error Msg", async ({ page }) => {
+    const createBillsPage = new CreateBillsPage(page);
+    const dashboardPage = new DashboardPage(page);
+
+    // Browse to Dashboard page
+    await dashboardPage.goto();
+
+    // Browse to Bills page from Dashboard page
+    await dashboardPage.viewBillsButton.click();
+
+    // Check Header for page
+    await expect(
+      page.getByRole("heading", { name: "Bills" }),
+      "Check that the heading is now 'Bills'"
+    ).toBeVisible();
+
+    // Browse to Create page using Button
+    await page.getByRole("link", { name: "Create Bill" }).click();
+
+    // Check URL
+    await page.waitForURL(`/bill/new`);
+
+    // Check Header for Create page
+    await expect(
+      page.getByText("New Bill"),
+      "Check current page title to be New Bill"
+    ).toBeVisible();
+
+    // Create fake data
+    const valueSEK = "-1";
+
+    // Fill form with fake data
+    await page
+      //.locator("div")
+      //.filter({ hasText: /^VALUE \(SEK\)$/ })
+      .getByRole("spinbutton")
+      .fill(valueSEK);
+    await page.getByText("Save").click();
+
+    // Check for error message
+    await expect(
+      page.getByText("Value must be greater than 0"),
+      "Check error message"
+    ).toBeVisible();
+  });
 });
