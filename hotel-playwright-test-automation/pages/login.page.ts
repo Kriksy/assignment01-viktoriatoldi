@@ -1,7 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
-require("dotenv").config();
-
 export class LoginPage {
   readonly page: Page;
   readonly usernameTextfield: Locator;
@@ -25,5 +23,7 @@ export class LoginPage {
     await this.passwordTextfield.fill(password);
     // Click the submit button
     await this.loginButton.click();
+
+    await this.page.waitForURL(`/`);
   }
 }
