@@ -4,12 +4,13 @@ require("dotenv").config();
 
 export class CreateClientsPage {
   readonly page: Page;
+  readonly createClientButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
   }
 
   async goto() {
-    await this.page.goto(`${process.env.BASE_URL}/clients`);
+    await this.page.goto(`/clients`);
   }
 }
