@@ -56,18 +56,12 @@ test.describe("Bills", () => {
     // Check last item to contain the fake data
     await expect(element).toContainText(valueSEK);
 
+    // Click on "..."
+    await element.locator("div.action").click();
+
     // Delete new entry
-
-    // ...
-
-    // Perform Logout
-    await page.goto(`${process.env.BASE_URL}/`);
-    await page.getByRole("button", { name: "Logout" }).click();
-
-    await expect(
-      page,
-      "Check that the url is /login after clicking logout"
-    ).toHaveURL(/.*\/login/);
+    const deleteElement = element.getByText("Delete");
+    await deleteElement.click();
   });
 
   test("Create Bill Error Msg", async ({ page }) => {
