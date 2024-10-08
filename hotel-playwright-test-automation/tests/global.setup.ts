@@ -1,10 +1,8 @@
 import { test as setup, expect } from "@playwright/test";
-import path from "path";
+
+import { STORAGE_STATE } from "../playwright.config";
+
 import { LoginPage } from "../pages/login.page";
-
-require("dotenv").config();
-
-const authFile = path.join(__dirname, "../playwright/.auth/user.json");
 
 //  Global setup
 //  https://playwright.dev/docs/auth#basic-shared-account-in-all-tests
@@ -26,5 +24,5 @@ setup("Authenticate", async ({ page }) => {
 
   // End of authentication steps.
 
-  await page.context().storageState({ path: authFile });
+  await page.context().storageState({ path: STORAGE_STATE });
 });
