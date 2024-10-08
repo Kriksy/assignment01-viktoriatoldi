@@ -54,13 +54,11 @@ test.describe("Clients", () => {
     await expect(element).toContainText(userEmail);
     await expect(element).toContainText(userPhoneNo);
 
-    // Perform Logout
-    await page.goto(`${process.env.BASE_URL}/`);
-    await page.getByRole("button", { name: "Logout" }).click();
+    // Click on "..."
+    await element.locator("div.action").click();
 
-    await expect(
-      page,
-      "Check that the url is /login after clicking logout"
-    ).toHaveURL(/.*\/login/);
+    // Delete new entry
+    const deleteElement = element.getByText("Delete");
+    await deleteElement.click();
   });
 });
