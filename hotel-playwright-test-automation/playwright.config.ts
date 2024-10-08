@@ -1,10 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
+import path from "path";
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 require("dotenv").config();
+
+export const STORAGE_STATE = path.join(__dirname, "playwright/.auth/user.json");
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,7 +23,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: [["html"], ["list"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -37,14 +40,21 @@ export default defineConfig({
   //
   projects: [
     // Setup project
-    { name: "setup", testMatch: /.*\.setup\.ts/ },
-
+    { name: "setup", testMatch: /.*\.setup\.ts/, teardown: "teardown" },
+    {
+      name: "teardown",
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: STORAGE_STATE,
+      },
+      testMatch: /global\.teardown\.ts/,
+    },
     {
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state.
-        storageState: "playwright/.auth/user.json",
+        storageState: STORAGE_STATE,
       },
       testMatch: /.*\.spec\.ts/,
       dependencies: ["setup"],
