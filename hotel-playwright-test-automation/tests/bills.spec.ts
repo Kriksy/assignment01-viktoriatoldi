@@ -64,7 +64,7 @@ test.describe("Bills", () => {
     await deleteElement.click();
   });
 
-  test("Create Bill Error Msg", async ({ page }) => {
+  test("Create Bill Error Message", async ({ page }) => {
     const createBillsPage = new CreateBillsPage(page);
     const dashboardPage = new DashboardPage(page);
 
