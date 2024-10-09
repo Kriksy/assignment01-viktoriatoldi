@@ -70,5 +70,22 @@ test.describe("Reservations", () => {
       .filter({ hasText: /^Bill/ })
       .getByRole("combobox")
       .selectOption("1"); // ID: 1
+
+    await page.getByText("Save").click();
+
+    // Check URL after "Save" button click
+    await page.waitForURL(`/reservations`);
+
+    // Get last item in the list
+    const element = page.locator(
+      "#app > div > div.reservations > div:nth-last-child(1)"
+    );
+
+    // Click on "..."
+    await element.locator("div.action").click();
+
+    // Delete new entry
+    const deleteElement = element.getByText("Delete");
+    await deleteElement.click();
   });
 });
