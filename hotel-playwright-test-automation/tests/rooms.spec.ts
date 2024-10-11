@@ -3,7 +3,16 @@ import { faker } from "@faker-js/faker";
 
 import { CreateRoomsPage } from "../pages/create_rooms.page";
 import { ViewRoomsPage } from "../pages/view_rooms.page";
+
 test.describe("Rooms", () => {
+  test("View Rooms", async ({ page }) => {
+    const viewRoomsPage = new ViewRoomsPage(page);
+    await viewRoomsPage.goto();
+    await expect(page, "Check that the url is correct").toHaveURL(/.*\/rooms/);
+
+    await viewRoomsPage.gotoCreateRoom();
+  });
+
   test("Create Room", async ({ page }) => {
     const createRoomsPage = new CreateRoomsPage(page);
 
@@ -22,10 +31,10 @@ test.describe("Rooms", () => {
     const roomPrice = faker.number.int({ min: 1, max: 1000 }).toString();
     const roomFeatureCount = faker.number.int({ min: 1, max: 4 });
     const roomFeatures = faker.helpers.arrayElement([
-      "Balcony",
-      "Ensuite",
-      "Sea View",
-      "Penthouse",
+      "balcony",
+      "ensuite",
+      "sea view",
+      "penthouse",
     ]);
 
     // Fill form with fake data
@@ -50,14 +59,12 @@ test.describe("Rooms", () => {
 
     // Check last item to contain the fake data
     await expect(element).toContainText(roomCategory);
+    await expect(element).toContainText(roomNumber);
+    await expect(element).toContainText(roomFloor);
+    await expect(element).toContainText(roomPrice);
+    await expect(element).toContainText(roomFeatures);
 
-    // TODO: Check last item
-    // getByText('Features: balcony', { exact: true })
-    // getByText('Category: double').nth(2)
-    // getByText('Available:', { exact: true })
-    // getByText('Price: 964kr')
-
-    // Click on "..."
+    // Delete new entry
     await viewRoomsPage.deleteLastItem();
   });
 });
