@@ -1,0 +1,7 @@
+.env
+*.dev.md
+rasi10-*
+rasi10-hotel-test-vue/
+.DS_STORE
+TODO
+.TODO 
