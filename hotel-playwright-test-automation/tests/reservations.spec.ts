@@ -5,6 +5,16 @@ import { CreateReservationsPage } from "../pages/create_reservations.page";
 import { ViewReservationsPage } from "../pages/view_reservations.page";
 
 test.describe("Reservations", () => {
+  test("View Reservations", async ({ page }) => {
+    const viewReservationsPage = new ViewReservationsPage(page);
+    await viewReservationsPage.goto();
+    await expect(page, "Check that the url is correct").toHaveURL(
+      /.*\/reservations/
+    );
+
+    await viewReservationsPage.gotoCreateReservation();
+  });
+
   test("Create Reservation", async ({ page }) => {
     const createReservationsPage = new CreateReservationsPage(page);
 
