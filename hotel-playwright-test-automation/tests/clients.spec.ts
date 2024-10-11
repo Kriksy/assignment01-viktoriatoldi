@@ -6,9 +6,18 @@ import { CreateClientsPage } from "../pages/create_clients.page";
 import { ViewClientsPage } from "../pages/view_clients.page";
 
 test.describe("Clients", () => {
+  test("View Clients", async ({ page }) => {
+    const viewClientsPage = new ViewClientsPage(page);
+    await viewClientsPage.goto();
+    await expect(page, "Check that the url is correct").toHaveURL(
+      /.*\/clients/
+    );
+
+    await viewClientsPage.gotoCreateClient();
+  });
+
   test("Create Client", async ({ page }) => {
     const createClientsPage = new CreateClientsPage(page);
-    const viewClientsPage = new ViewClientsPage(page);
 
     // Browse to Clients
     await createClientsPage.goto();
@@ -26,7 +35,7 @@ test.describe("Clients", () => {
     await expect(page, "Check that the url is correct").toHaveURL(
       /.*\/clients/
     );
-
+    const viewClientsPage = new ViewClientsPage(page);
     await viewClientsPage.goto();
 
     const element = viewClientsPage.lastItem;
