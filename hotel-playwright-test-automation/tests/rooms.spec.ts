@@ -2,36 +2,13 @@ import { test, expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 
 import { CreateRoomsPage } from "../pages/create_rooms.page";
-import { DashboardPage } from "../pages/dashboard.page";
-
+import { ViewRoomsPage } from "../pages/view_rooms.page";
 test.describe("Rooms", () => {
   test("Create Room", async ({ page }) => {
     const createRoomsPage = new CreateRoomsPage(page);
-    const dashboardPage = new DashboardPage(page);
 
-    // Browse to Dashboard page
-    await dashboardPage.goto();
-
-    // Browse to Rooms page from Dashboard page
-    await dashboardPage.viewRoomsButton.click();
-
-    // Check Header for page
-    await expect(
-      page.getByRole("heading", { name: "Rooms" }),
-      "Check that the heading is now 'Rooms'"
-    ).toBeVisible();
-
-    // Browse to Create page using Button
-    await page.getByRole("link", { name: "Create Room" }).click();
-
-    // Check URL
-    await page.waitForURL(`/room/new`);
-
-    // Check Header for Create page
-    await expect(
-      page.getByText("New Room"),
-      "Check current page title to be New Room"
-    ).toBeVisible();
+    // Browse to page
+    await createRoomsPage.goto();
 
     // Create fake data
     const roomCategory = faker.helpers.arrayElement([
@@ -50,49 +27,27 @@ test.describe("Rooms", () => {
       "Sea View",
       "Penthouse",
     ]);
-    //for (let i = 0; i < roomFeatureCount; i++) {
-    //}
 
     // Fill form with fake data
-    await page
-      //.locator("div")
-      //.filter({ hasText: /^Category$/ })
-      .getByRole("combobox")
-      .selectOption(roomCategory);
+    await createRoomsPage.formRoomCategory.selectOption(roomCategory);
 
-    await page
-      .locator("div")
-      .filter({ hasText: /^Number$/ })
-      .getByRole("spinbutton")
-      .fill(roomNumber);
+    await createRoomsPage.formRoomNumber.fill(roomNumber);
 
-    await page
-      .locator("div")
-      .filter({ hasText: /^Floor$/ })
-      .getByRole("spinbutton")
-      .fill(roomFloor);
+    await createRoomsPage.formRoomFloor.fill(roomFloor);
 
-    await page
-      .locator("div")
-      .filter({ hasText: /^Price$/ })
-      .getByRole("spinbutton")
-      .fill(roomPrice);
+    await createRoomsPage.formRoomPrice.fill(roomPrice);
 
-    await page
-      .locator("div")
-      .filter({ hasText: /^Features/ })
-      .getByRole("listbox")
-      .selectOption(roomFeatures);
+    await createRoomsPage.formRoomFeatures.selectOption(roomFeatures);
 
-    await page.getByText("Save").click();
+    await createRoomsPage.save();
 
-    // Check URL after "Save" button click
-    await page.waitForURL(`/rooms`);
+    await expect(page, "Check that the url is correct").toHaveURL(/.*\/rooms/);
 
-    // Get last item in the list
-    const element = page.locator(
-      "#app > div > div.rooms > div:nth-last-child(1)"
-    );
+    const viewRoomsPage = new ViewRoomsPage(page);
+    await viewRoomsPage.goto();
+
+    const element = viewRoomsPage.lastItem;
+
     // Check last item to contain the fake data
     await expect(element).toContainText(roomCategory);
 
@@ -103,10 +58,6 @@ test.describe("Rooms", () => {
     // getByText('Price: 964kr')
 
     // Click on "..."
-    await element.locator("div.action").click();
-
-    // Delete new entry
-    const deleteElement = element.getByText("Delete");
-    await deleteElement.click();
+    await viewRoomsPage.deleteLastItem();
   });
 });
