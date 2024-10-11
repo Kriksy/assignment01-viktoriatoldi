@@ -18,7 +18,6 @@ test.describe("Bills", () => {
 
   test("Create Bill", async ({ page }) => {
     const createBillsPage = new CreateBillsPage(page);
-    const dashboardPage = new DashboardPage(page);
 
     // Browse to Create Bill page
     await createBillsPage.goto();
@@ -46,42 +45,16 @@ test.describe("Bills", () => {
 
   test("Create Bill Error Message", async ({ page }) => {
     const createBillsPage = new CreateBillsPage(page);
-    const dashboardPage = new DashboardPage(page);
 
-    // Browse to Dashboard page
-    await dashboardPage.goto();
-
-    // Browse to Bills page from Dashboard page
-    await dashboardPage.viewBillsButton.click();
-
-    // Check Header for page
-    await expect(
-      page.getByRole("heading", { name: "Bills" }),
-      "Check that the heading is now 'Bills'"
-    ).toBeVisible();
-
-    // Browse to Create page using Button
-    await page.getByRole("link", { name: "Create Bill" }).click();
-
-    // Check URL
-    await page.waitForURL(`/bill/new`);
-
-    // Check Header for Create page
-    await expect(
-      page.getByText("New Bill"),
-      "Check current page title to be New Bill"
-    ).toBeVisible();
+    // Browse to Create Bill page
+    await createBillsPage.goto();
 
     // Create fake data
     const valueSEK = "-1";
 
     // Fill form with fake data
-    await page
-      //.locator("div")
-      //.filter({ hasText: /^VALUE \(SEK\)$/ })
-      .getByRole("spinbutton")
-      .fill(valueSEK);
-    await page.getByText("Save").click();
+    await createBillsPage.formValue.fill(valueSEK);
+    await createBillsPage.save();
 
     // Check for error message
     await expect(
