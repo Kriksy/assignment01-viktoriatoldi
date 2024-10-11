@@ -67,4 +67,24 @@ test.describe("Rooms", () => {
     // Delete new entry
     await viewRoomsPage.deleteLastItem();
   });
+
+  test("Create Room Error Message", async ({ page }) => {
+    const createRoomsPage = new CreateRoomsPage(page);
+
+    // Browse to page
+    await createRoomsPage.goto();
+
+    // Fill form with fake data
+    await createRoomsPage.save();
+
+    // Check for error message
+    await expect(
+      page.getByText("Floor must be set"),
+      "Check Floor error message"
+    ).toBeVisible();
+    await expect(
+      page.getByText("Price must be a whole number"),
+      "Check Price error message"
+    ).toBeVisible();
+  });
 });
